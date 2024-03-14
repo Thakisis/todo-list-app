@@ -1,49 +1,52 @@
-import { UseTodoApp } from "../hooks/UseTodoApp";
-import { useContext } from "react";
-import { TodoContext } from "../../core/context/TodoContext";
-import "../styles/styles.css";
-import { DeleteItem } from "../../TodoDeleteModal/components/DeleteItem";
-import ProgressEmptyIcon from "../../core/Icons/ProgressEmptyIcon";
-import { InProgressIcon } from "../../core/Icons/InProgressIcon";
-import { FinishedProgressIcon } from "../../core/Icons/FinishedProgressIcon";
-import { UpdateIcon } from "../../core/Icons/UpdateIcon";
-import { DeleteIcon } from "../../core/Icons/DeleteIcon";
-import { TodoUpdateModal } from "../../TodoUpdateModal/components/TodoUpdateModal";
 
-export const TodoCard = ({ todos = [] }) => {
-  const { id, item, priority } = todos;
-  const { onProgressButton, progress } = UseTodoApp();
-  const { openUpdateModal, setOpenDeleteModal, setOpenUpdateModal, updateItem } =
-    useContext(TodoContext);
+import "../styles/styles.css"
+import { DeleteItem } from "../../TodoDeleteModal"
+import ProgressEmptyIcon from "../../core/Icons/ProgressEmptyIcon"
+import { InProgressIcon } from "../../core/Icons/InProgressIcon"
+import { FinishedProgressIcon } from "../../core/Icons/FinishedProgressIcon"
+import { UpdateIcon } from "../../core/Icons/UpdateIcon"
+import { DeleteIcon } from "../../core/Icons/DeleteIcon"
+import { useTodoStore } from "src/state"
+import { modalList } from "src/state/Constants"
 
+export const TodoCard = ({ taskid, taskText, priority, progress }) => {
+
+  const priorityText = ["", "Low", "Medium", "High"]
+  const openModal = useTodoStore((state) => state.Actions.openModal)
+  const openDelete = () => {
+    openModal(modalList.delete, taskid)
+  }
+  const openEdit = () => {
+    openModal(modalList.update, taskid)
+  }
   return (
     <>
-   
 
-      <DeleteItem id={id} />
+
+      <DeleteItem id={taskid} />
 
       <div className="task">
         <div className="information column">
           <span className="information__title">Task</span>
-          <span className="information__description">{item}</span>
+          <span className="information__description">{taskText}</span>
         </div>
 
         <div className="priority column">
           <span className="priority__title">Priority</span>
-          <span className={`priority__description ${priority}`}>{priority}</span>
+          <span className={`priority__description ${priorityText[priority].toLowerCase()}`}>{priorityText[priority]}</span>
         </div>
 
         <div className="status column">
           <button
             className="status__button"
-            onClick={() => onProgressButton(progress)}
+          //onClick={() => onProgressButton(progress)}
           >
             {progress}
           </button>
         </div>
         <div className="progress column">
           {
-  
+
             progress === "To Do" ? (
               <ProgressEmptyIcon />
             ) : progress === "In Progress" ? (
@@ -54,16 +57,16 @@ export const TodoCard = ({ todos = [] }) => {
           }
         </div>
         <div className="action column">
-          <div className="action__update" onClick={() => updateItem(id, item, priority)}>
+          <div className="action__update" onClick={openEdit}>
             <UpdateIcon />
 
           </div>
-          <div className="action__delete" onClick={() => setOpenDeleteModal(true)}>
+          <div className="action__delete" onClick={openDelete}>
             <DeleteIcon />
           </div>
 
         </div>
       </div>
     </>
-  );
-};
+  )
+}

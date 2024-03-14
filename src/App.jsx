@@ -1,16 +1,12 @@
 
-import { TodoApp } from "./TodoApp/screen/TodoApp";
-import { TodoProvider } from "./core/context/TodoProvider";
+import { TodoApp } from "./TodoApp/screen/TodoApp"
+
 
 
 function App() {
   return (
-    <TodoProvider>
-
-        <TodoApp />
-  
-    </TodoProvider>
-  );
+    <TodoApp />
+  )
 }
 
-export default App;
+export default App

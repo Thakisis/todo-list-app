@@ -29,13 +29,14 @@
 display: flex;
 justify-content: start;
 padding-left: 0;    
+gap:2rem;
 }
 
 .priority {
     text-transform: capitalize;
     border-radius: 10px;
     padding: 1rem 3rem;
-    margin-right: 1rem;
+    
 }
 
 .high-select {

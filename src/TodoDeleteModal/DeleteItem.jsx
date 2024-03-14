@@ -1,22 +1,24 @@
-import { Button, Box, Modal, Typography } from "@mui/material";
+import { Button, Box, Modal, Typography } from "@mui/material"
+import { modalList } from "src/state/Constants"
 
-import "../styles/styles.css";
-import { useContext } from "react";
-import { TodoContext } from "../../core/context/TodoContext";
+import { useTodoStore } from "src/state"
+
 
 export const DeleteItem = ({ id }) => {
-  const { openDeleteModal, setOpenDeleteModal, deleteItem } =
-    useContext(TodoContext);
+
+  const { closeModal, deleteTask } = useTodoStore((state) => state.Actions)
+  const modalState = useTodoStore((state) => state.modal)
+  const idTask = useTodoStore(state => state.modal.idTask)
 
   const onHandleDelete = () => {
-    deleteItem(id);
-    setOpenDeleteModal(false);
-  };
+    deleteTask(idTask)
+    closeModal()
+  }
 
   return (
     <>
       <Modal
-        open={openDeleteModal}
+        open={modalState.isOpen && modalState.modalOpen === modalList.delete}
         className="modal-container"
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
@@ -39,10 +41,10 @@ export const DeleteItem = ({ id }) => {
           <Typography> Are you sure you want to delete this task?</Typography>
           <Box>
             <Button onClick={onHandleDelete}>Delete</Button>
-            <Button onClick={() => setOpenDeleteModal(false)}>Cancel</Button>
+            <Button onClick={closeModal}>Cancel</Button>
           </Box>
         </Box>
       </Modal>
     </>
-  );
-};
+  )
+}

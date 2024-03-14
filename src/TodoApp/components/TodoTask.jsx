@@ -1,22 +1,19 @@
-import { Box } from "@mui/material";
-import { TodoCard } from "./TodoCard";
-import { useContext } from "react";
-import { TodoContext } from "../../core/context/TodoContext";
-
+import { TodoCard } from "./TodoCard"
+import { useTodoStore } from "src/state/todoStore"
 export const TodoTask = () => {
- const {todoState} = useContext(TodoContext)
-  
+  const todoList = useTodoStore((state) => state.todoList)
+
   return (
     <>
-     
-      {todoState?.map((todo) => {
+
+      {todoList.map((task) => {
         return (
 
 
-          <TodoCard  todos={todo} key={todo.id}  />
-          );
-        })}
-     
+          <TodoCard {...task} key={task.taskid} />
+        )
+      })}
+
     </>
-  );
-};
+  )
+}
